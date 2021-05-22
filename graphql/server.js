@@ -10,21 +10,10 @@ const {
 } = require('graphql')
 const app = express()
 
-const hospitals = [
+const user = [
 	{ id: 1, name: 'Springfield Hospital' },
 	{ id: 2, name: 'Brampton Civic' },
 	{ id: 3, name: 'Quahog Hospital' }
-]
-
-const patient = [
-	{ id: 1, name: 'John Doe', patientId: 1 },
-	{ id: 2, name: 'John Doe', patientId: 1 },
-	{ id: 3, name: 'John Doe', patientId: 1 },
-	{ id: 4, name: 'John Doe', patientId: 2 },
-	{ id: 5, name: 'John Doe', patientId: 2 },
-	{ id: 6, name: 'John Doe', patientId: 2 },
-	{ id: 7, name: 'John Doe', patientId: 3 },
-	{ id: 8, name: 'John Doe', patientId: 3 }
 ]
 
 const token = [
@@ -39,33 +28,32 @@ const token = [
   { id: 9, name: '13048109348', tokenId: 3 },
 ]
 
-const swiftmedId = new GraphQLObjectType({
-  name: 'SwiftMed ID',
-  description: 'Personalized token for data transportation',
+const growify = new GraphQLObjectType({
+  name: 'Growify',
+  description: 'GROWIFY PROFILE',
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLInt) },
     name: { type: GraphQLNonNull(GraphQLString) },
-    patientId: { type: GraphQLNonNull(GraphQLInt) },
-    patient: {
+    growify: { type: GraphQLNonNull(GraphQLInt) },
+    growify: {
       type: token,
       resolve: (token) => {
-        return patient.find(patient => tokenId === patient.tokenId)
+        return patient.find(user => tokenId === user.tokenId)
       }
     }
   })
 })
 
-const hospitaldistance = new GraphQLObjectType({
-  name: 'Hospital Distance',
-  description: 'Distance and Location endpoint for different hostpitals',
+const seedval = new GraphQLObjectType({
+  name: '$EED VALUE',
+  description: 'Purchase and Sell',
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLInt) },
     name: { type: GraphQLNonNull(GraphQLString) },
-    hospital: { type: GraphQLNonNull(GraphQLInt) },
-    hospitaldistance: {
-      type: token,
-      resolve: (token) => {
-        return hospital.find(patient => tokenId === hospital.swiftmedId)
+    seedval: {
+      type: val,
+      resolve: (val) => {
+        return seedval.find(val => seedval === val.seedval)
       }
     }
   })
@@ -75,30 +63,12 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
-    swiftmedId: {
-      type: tokenId,
-      description: 'Token',
+    growify: {
+      type: growify,
+      description: 'GrowifyId',
       args: {
         id: { type: GraphQLInt }
-      },
-      resolve: (parent, args) => token.find(hospitallocation => tokenId.id === args.id)
     },
-    hospital: {
-      type: new GraphQLList(HospitalId),
-      description: 'Hospital List',
-      resolve: () => hospital
-    },
-    token: {
-      type: new GraphQLList(tokenId),
-      description: 'Token List',
-      resolve: () => authors
-    },
-    patient: {
-      type: Patients,
-      description: 'Patient List',
-      args: {
-        id: { type: GraphQLInt }
-      },
       resolve: (parent, args) => patient.find(patientId => tokenId === args.id)
     }
   })
@@ -108,31 +78,16 @@ const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Root Mutation',
   fields: () => ({
-    addPatient: {
-      type: patientId,
-      description: 'Add a patient',
+    buyseed: {
+      type: seedval,
+      description: 'Buy or sell $EED',
       args: {
         name: { type: GraphQLNonNull(GraphQLString) },
-        authorId: { type: GraphQLNonNull(GraphQLInt) }
+        growify: { type: GraphQLNonNull(GraphQLInt) }
       },
-      resolve: (parent, args) => {
-        const patient = { id: tokenId + 1, name: args.name, patientId: args.authorId }
-        patient.push(patient)
-        return patient
+        return growify
       }
     },
-    addHospital: {
-      type: hospitalId,
-      description: 'Add a Hospital',
-      args: {
-        name: { type: GraphQLNonNull(GraphQLString) }
-      },
-      resolve: (parent, args) => {
-        const hospital = { id: hospital.distance + 1, name: args.name }
-        hospital.push(hospital)
-        return hospital
-      }
-    }
   })
 })
 
@@ -146,4 +101,4 @@ app.use('/graphql', expressGraphQL({
   graphiql: true
 }))
 
-app.listen(5000, () => console.log('Server Running!!'))
+app.listen(4200, () => console.log('Server Running!!'))
